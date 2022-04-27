@@ -34,6 +34,7 @@ def model():
 def home():
     if request.method == 'POST':
         
+        #Check if we press the "GetGenre button"
         if request.form.get("GetGenre") == "GENRE":
             #Call model
             model()
@@ -42,13 +43,14 @@ def home():
         #Function that checks if we uploaded files        
         elif request.files.getlist('files'):
             
-
+            #Retreives file(s) and puts them at specified location
             for f in request.files.getlist('files'):
                 if f.filename:
                     f.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'], secure_filename(f.filename)))
                 else:
                     return render_template("home.html")
         
+        #If not button pressed, load home page again
         else:
             return render_template("home.html")
     return render_template("home.html")
