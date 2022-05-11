@@ -1,10 +1,14 @@
-from flask import Flask, redirect, url_for, render_template, request, session, flash, send_file
+from flask import Flask, redirect, url_for, render_template, request, send_file
 from datetime import timedelta
 from werkzeug.utils import secure_filename
-import os 
+from flask_cors import CORS #comment this on deployment
+import os
 
 #Configuration stuff
 app = Flask(__name__)
+
+# cannot send request to localhost:5000 from localhost:3000 without this line
+CORS(app) # comment this on deployment
 
 #File path to put uploaded file
 app.config['UPLOAD_FOLDER'] = 'static/files'
@@ -34,7 +38,6 @@ def home():
         
         #Function that checks if we uploaded files        
         elif request.files.getlist('files'):
-            
             #Retreives file(s) and puts them at specified location
             for f in request.files.getlist('files'):
                 if f.filename:
