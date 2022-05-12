@@ -54,29 +54,6 @@ function App() {
               Upload
             </Button>
           </label>
-          {/*<Button
-            variant="contained"
-            endIcon={<SendIcon />}
-            onClick={() => {
-              // post if have selected file
-              if (selectedFile) {
-                // `file` here for matching the files[`file`] on server side
-                const formData = new FormData();
-                formData.append("file", selectedFile);
-
-                axios
-                  .post("http://localhost:5000", formData)
-                  .then(() => {
-                    console.log("SUCCESS");
-                  })
-                  .catch((error) => {
-                    console.log(error);
-                  });
-              }
-            }}
-          >
-            Classify
-          </Button>*/}
           <LoadingButton
             disabled={selectedFile ? false : true}
             loading={loading}
