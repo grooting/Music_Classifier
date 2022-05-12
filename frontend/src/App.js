@@ -31,11 +31,17 @@ function App() {
           <Typography variant="h5" color="white">
             Music Classifier
           </Typography>
+          {selectedFile && (
+            <Typography variant="caption" color="white">
+              Selected {selectedFile.name}
+            </Typography>
+          )}
           <label>
             <Input
               type="file"
               onChange={(event) => {
-                setSelectedFile(event.target.files[0]);
+                const file = event.target.files[0];
+                if (file) setSelectedFile(file);
               }}
             />
             <Button
@@ -52,8 +58,12 @@ function App() {
             onClick={() => {
               // post if have selected file
               if (selectedFile) {
+                // `file` here for matching the files[`file`] on server side
+                const formData = new FormData();
+                formData.append("file", selectedFile);
+
                 axios
-                  .post("http://localhost:5000", selectedFile)
+                  .post("http://localhost:5000", formData)
                   .then(() => {
                     console.log("SUCCESS");
                   })
