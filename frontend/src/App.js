@@ -9,6 +9,7 @@ import SendIcon from "@mui/icons-material/Send";
 import Typography from "@mui/material/Typography";
 import placeholder from "./assets/adrian-regeci-SAS0lq2QGLs-unsplash.jpg";
 import axios from "axios";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const Input = styled("input")({
   display: "none",
@@ -16,6 +17,7 @@ const Input = styled("input")({
 
 function App() {
   const [selectedFile, setSelectedFile] = useState();
+  const [loading, setLoading] = useState(false);
 
   return (
     <>
@@ -52,7 +54,7 @@ function App() {
               Upload
             </Button>
           </label>
-          <Button
+          {/*<Button
             variant="contained"
             endIcon={<SendIcon />}
             onClick={() => {
@@ -74,7 +76,36 @@ function App() {
             }}
           >
             Classify
-          </Button>
+          </Button>*/}
+          <LoadingButton
+            disabled={selectedFile ? false : true}
+            loading={loading}
+            loadingPosition="end"
+            endIcon={<SendIcon />}
+            variant="contained"
+            onClick={() => {
+              // post if have selected file
+              if (selectedFile) {
+                // `file` here for matching the files[`file`] on server side
+                const formData = new FormData();
+                formData.append("file", selectedFile);
+                setLoading(true);
+                axios
+                  .post("http://localhost:5000", formData)
+                  .then(() => {
+                    setTimeout(() => {
+                      setLoading(false);
+                    }, 5000);
+                    console.log("SUCCESS");
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+              }
+            }}
+          >
+            {loading ? "Classifying" : "Classify"}
+          </LoadingButton>
         </Stack>
         <img src={placeholder} alt="music" />
       </Stack>
